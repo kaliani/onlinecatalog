@@ -1,28 +1,32 @@
 from django.db import models
+from django.urls import reverse
 
-class Employee(models.Model):
-    first_name = models.CharField(max_length = 45, name = 'Имя')
-    last_name = models.CharField(max_length = 45, name = 'Фамилия')
-    middle_name = models.CharField(max_length = 45, name = 'Отчество')
-    date = models.DateField(null=True, blank=True)
-    position = models.ForeignKey('Position', on_delete=models.SET_NULL, null=True)
+
+class FIO(models.Model):
+    fio = models.CharField(max_length = 150, name = 'ФИО')
 
     def __str__(self):
-        
-        return self.last_name
+        """
+        String for representing the Model object (in Admin site etc.)
+        """
+        return self.fio
+
+class Employee(models.Model):
+    fio = models.ForeignKey('FIO', on_delete=models.SET_NULL, null = True, name='ФИО')
+    date = models.DateField(null=True, blank=True, name='Дата приема на работу')
+    salary = models.IntegerField(name = 'Зарплата')
+    position = models.ForeignKey('Position', on_delete=models.SET_NULL, null=True, name = 'Должность')
+    
+
 
 
 class Position(models.Model):
-    #first_name = models.ForeignKey('Employee', on_delete=models.SET_NULL, null=True) 
-    #last_name = models.ForeignKey('Employee', on_delete=models.SET_NULL, null=True)
-    #middle_name = models.ForeignKey('Employee', on_delete=models.SET_NULL, null=True)
-    department = models.CharField(max_length = 100)
+ 
+    department = models.CharField(max_length = 100, name = 'Отдел')
     position = models.CharField(max_length = 45, name = 'Должность')
-    boss = models.ForeignKey('Employee', on_delete=models.SET_NULL, null =True)
+    boss = models.ForeignKey('FIO', on_delete=models.SET_NULL, null =True, name = 'Начальник')
 
-    def __str__(self):
-        
-        return self.position
+
 
 
 
