@@ -23,6 +23,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
 
-    url('^', show_employees),
+    url('all_employees/', show_employees),
 ]
 urlpatterns += staticfiles_urlpatterns()
