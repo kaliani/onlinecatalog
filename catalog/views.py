@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from catalog.models import Employee
 
-def index(request):
-    return HttpResponse("Hello")
+
+def show_employees(request):
+    return render(request, "index.html", {'employees': Employee.objects.all()})

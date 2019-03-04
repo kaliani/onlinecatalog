@@ -1,0 +1,56 @@
+<head>
+<link rel="stylesheet" href="/static/styles.css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Note: IE8 supports the content property only if a !DOCTYPE is specified. -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<title>Employee</title>
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" > </script>
+	
+	<script type="text/javascript">
+
+		$( document ).ready( function( ) {
+				$( '.tree li' ).each( function() {
+						if( $( this ).children( 'ul' ).length > 0 ) {
+								$( this ).addClass( 'parent' );     
+						}
+				});
+				
+				$( '.tree li.parent > a' ).click( function( ) {
+						$( this ).parent().toggleClass( 'active' );
+						$( this ).parent().children( 'ul' ).slideToggle( 'fast' );
+				});
+				
+				$( '#all' ).click( function() {
+					
+					$( '.tree li' ).each( function() {
+						$( this ).toggleClass( 'active' );
+						$( this ).children( 'ul' ).slideToggle( 'fast' );
+					});
+				});
+				
+		});
+        
+	</script>
+</head>
+<body>
+
+{% load mptt_tags %}
+<div id="wrapper">
+<div class="tree">
+<button id="all">Toggle All</button>
+<ul>
+    {% recursetree employees %}
+        <li>
+           <a>{{ node.name }}({{ node.position }}) - {{ node.salary }}$</a>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+</div>
+</div>
+
+</body>

@@ -1,30 +1,18 @@
 from django.db import models
-from django.urls import reverse
+from mptt.models import MPTTModel, TreeForeignKey
 
-
-class FIO(models.Model):
-    fio = models.CharField(max_length = 150, name = 'ФИО')
-
-    def __str__(self):
-        """
-        String for representing the Model object (in Admin site etc.)
-        """
-        return self.fio
-
-class Employee(models.Model):
-    fio = models.ForeignKey('FIO', on_delete=models.SET_NULL, null = True, name='ФИО')
-    date = models.DateField(null=True, blank=True, name='Дата приема на работу')
-    salary = models.IntegerField(name = 'Зарплата')
-    position = models.ForeignKey('Position', on_delete=models.SET_NULL, null=True, name = 'Должность')
+class Employee(MPTTModel):
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    position = models.CharField(max_length=50, verbose_name = 'Должность')
+    date = models.DateField(verbose_name= 'Дата приема на работу')
+    salary = models.IntegerField(verbose_name='Зарплата')
     
-
-
-
-class Position(models.Model):
- 
-    department = models.CharField(max_length = 100, name = 'Отдел')
-    position = models.CharField(max_length = 45, name = 'Должность')
-    boss = models.ForeignKey('FIO', on_delete=models.SET_NULL, null =True, name = 'Начальник')
+    def __str__(self):
+        return self.name
+    
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 
 

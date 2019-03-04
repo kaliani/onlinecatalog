@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Employee, Position, FIO
+from mptt.admin import MPTTModelAdmin
+from catalog.models import Employee
 
-admin.site.register(Employee)
-admin.site.register(Position)
-admin.site.register(FIO)
+admin.site.register(Employee, MPTTModelAdmin)
