@@ -9,8 +9,8 @@ class Employee(MPTTModel):
     salary = models.IntegerField(verbose_name='Зарплата')
     
     def __str__(self):
-        return self.name
-    
+	    return self.name
+
     class MPTTMeta:
         order_insertion_by = ['name']
 
